@@ -69,11 +69,11 @@ export const updateNodePositionByItsChild = ({
     rightChildEdge as SVGSVGElement
   );
   updateEdge(matchCard, parentNode, parentEdge as SVGSVGElement);
-  const currentHeightOfMatchCard = matchCardRect.height;
-  matchCard.style.setProperty("height", `${currentHeightOfMatchCard - 2}px`);
-  requestAnimationFrame(async () => {
-    // await new Promise((resolve) => setTimeout(resolve, 0));
-    matchCard.style.removeProperty("height");
+  requestAnimationFrame(() => {
+    updateNodePositionByItsChild({
+      matchCard: parentNode,
+      index: getParentIndex(index),
+    });
   });
   matchCard.setAttribute("data-rendering-complete", "true");
 };

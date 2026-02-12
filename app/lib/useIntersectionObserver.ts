@@ -31,12 +31,11 @@ export const useIntersectionObserver = ({
       const parentMatchIndex = matchCard.getAttribute(
         "data-parent-match-index"
       );
-      const parentMatchCard =
-        parentMatchIndex
-          ? (document.getElementById(
-              `match-${parentMatchIndex}`
-            ) as HTMLDivElement | null)
-          : null;
+      const parentMatchCard = parentMatchIndex
+        ? (document.getElementById(
+            `match-${parentMatchIndex}`
+          ) as HTMLDivElement | null)
+        : null;
       const edge =
         matchIndex && parentMatchIndex
           ? (document.getElementById(
@@ -62,8 +61,8 @@ export const useIntersectionObserver = ({
 
     const maxHeight = 160;
     const minHeight = 65;
-    const shrinkStart = 0.6;
-    const shrinkEnd = 0.95;
+    const shrinkStart = 0.1;
+    const shrinkEnd = 0.9;
 
     // ── Batch READ: collect all rects at once ──
     const measurements = cards.map(({ matchCard }) =>
@@ -96,21 +95,14 @@ export const useIntersectionObserver = ({
 
     // ── Batch WRITE: apply all styles, then update edges ──
     for (const { idx, articleHeight } of updates) {
-      cards[idx].article.style.setProperty(
-        "max-height",
-        `${articleHeight}px`
-      );
+      cards[idx].article.style.setProperty("max-height", `${articleHeight}px`);
     }
 
     // Edge updates after all layout writes are flushed
     for (const { idx } of updates) {
       const card = cards[idx];
       if (card.parentMatchCard && card.edge) {
-        updateEdge(
-          card.matchCard,
-          card.parentMatchCard,
-          card.edge
-        );
+        updateEdge(card.matchCard, card.parentMatchCard, card.edge);
       }
     }
   }, [buildCache]);
