@@ -1,35 +1,86 @@
 import React from "react";
 import { updateEdge } from "./edges";
 
+interface CachedCard {
+  matchCard: HTMLDivElement;
+  article: HTMLDivElement;
+  matchIndex: string | null;
+  parentMatchIndex: string | null;
+  parentMatchCard: HTMLDivElement | null;
+  edge: SVGSVGElement | null;
+}
+
 interface UseIntersectionObserverProps {
   bracketRef: React.RefObject<HTMLDivElement>;
 }
 export const useIntersectionObserver = ({
   bracketRef,
 }: UseIntersectionObserverProps) => {
-  const updateMatchCards = React.useCallback(() => {
+  const cachedCardsRef = React.useRef<CachedCard[] | null>(null);
+
+  const buildCache = React.useCallback(() => {
     const bracket = bracketRef.current;
     if (!bracket) return;
 
-    const bracketMatches = [
+    const matchCards = [
       ...bracket.querySelectorAll(".match-card-container"),
     ] as HTMLDivElement[];
-    const maxMatchArticleHeight = 160;
-    const minMatchArticleHeight = 65;
 
-    bracketMatches.forEach((matchCard: HTMLDivElement) => {
-      const matchCardRect = matchCard.getBoundingClientRect();
-      if (matchCardRect.x > 10) return;
-      const matchArticle = matchCard.querySelector("article") as HTMLDivElement;
-      // hidden on left side of screen - on horizontal scroll
-      const matchCardX = matchCardRect.x;
-      // width of the match card
-      const matchCardWidth = matchCardRect.width;
-      // raw percentage of card hidden off-screen
-      const rawPercentageHidden = Math.abs(matchCardX) / matchCardWidth;
-      // start shrinking at 70% hidden, reach minimum at 95% hidden
-      const shrinkStart = 0.6;
-      const shrinkEnd = 0.95;
+    cachedCardsRef.current = matchCards.map((matchCard) => {
+      const matchIndex = matchCard.getAttribute("data-match-index");
+      const parentMatchIndex = matchCard.getAttribute(
+        "data-parent-match-index"
+      );
+      const parentMatchCard =
+        parentMatchIndex
+          ? (document.getElementById(
+              `match-${parentMatchIndex}`
+            ) as HTMLDivElement | null)
+          : null;
+      const edge =
+        matchIndex && parentMatchIndex
+          ? (document.getElementById(
+              `edge-${matchIndex}-${parentMatchIndex}`
+            ) as SVGSVGElement | null)
+          : null;
+
+      return {
+        matchCard,
+        article: matchCard.querySelector("article") as HTMLDivElement,
+        matchIndex,
+        parentMatchIndex,
+        parentMatchCard,
+        edge,
+      };
+    });
+  }, [bracketRef]);
+
+  const updateMatchCards = React.useCallback(() => {
+    if (!cachedCardsRef.current) buildCache();
+    const cards = cachedCardsRef.current;
+    if (!cards || cards.length === 0) return;
+
+    const maxHeight = 160;
+    const minHeight = 65;
+    const shrinkStart = 0.6;
+    const shrinkEnd = 0.95;
+
+    // ── Batch READ: collect all rects at once ──
+    const measurements = cards.map(({ matchCard }) =>
+      matchCard.getBoundingClientRect()
+    );
+
+    // ── Compute new values (pure math, no DOM) ──
+    const updates: {
+      idx: number;
+      articleHeight: number;
+    }[] = [];
+
+    for (let i = 0; i < cards.length; i++) {
+      const rect = measurements[i];
+      if (rect.x > 10) continue;
+
+      const rawPercentageHidden = Math.abs(rect.x) / rect.width;
       const shrinkProgress = Math.min(
         Math.max(
           (rawPercentageHidden - shrinkStart) / (shrinkEnd - shrinkStart),
@@ -37,41 +88,49 @@ export const useIntersectionObserver = ({
         ),
         1
       );
-      // pick a value in range [minMatchArticleHeight, maxMatchArticleHeight] based on progress
-      const matchArticleHeight =
-        maxMatchArticleHeight -
-        (maxMatchArticleHeight - minMatchArticleHeight) * shrinkProgress;
-      // set the height of the match article
-      matchArticle.style.setProperty("max-height", `${matchArticleHeight}px`);
-      const parentMatchIndex = matchCard.getAttribute(
-        "data-parent-match-index"
+      const articleHeight =
+        maxHeight - (maxHeight - minHeight) * shrinkProgress;
+
+      updates.push({ idx: i, articleHeight });
+    }
+
+    // ── Batch WRITE: apply all styles, then update edges ──
+    for (const { idx, articleHeight } of updates) {
+      cards[idx].article.style.setProperty(
+        "max-height",
+        `${articleHeight}px`
       );
-      const matchIndex = matchCard.getAttribute("data-match-index");
-      if (!parentMatchIndex || !matchIndex) return;
-      const parentMatchCard = document.getElementById(
-        `match-${parentMatchIndex}`
-      ) as HTMLDivElement;
-      // @ts-expect-error - edge is always an SVGSVGElement
-      const edge = document.getElementById(
-        `edge-${matchIndex}-${parentMatchIndex}`
-      ) as SVGSVGElement;
-      updateEdge(matchCard, parentMatchCard, edge);
-    });
-  }, [bracketRef]);
+    }
+
+    // Edge updates after all layout writes are flushed
+    for (const { idx } of updates) {
+      const card = cards[idx];
+      if (card.parentMatchCard && card.edge) {
+        updateEdge(
+          card.matchCard,
+          card.parentMatchCard,
+          card.edge
+        );
+      }
+    }
+  }, [buildCache]);
 
   React.useEffect(() => {
     if (!bracketRef.current) return;
     const scrollParent = bracketRef.current.parentElement;
     if (!scrollParent) return;
 
+    // Build cache once DOM is ready
+    buildCache();
+
     const handleScroll = () => {
       updateMatchCards();
     };
 
-    scrollParent.addEventListener("scroll", handleScroll, {});
+    scrollParent.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       scrollParent.removeEventListener("scroll", handleScroll);
     };
-  }, [bracketRef, updateMatchCards]);
+  }, [bracketRef, updateMatchCards, buildCache]);
 };

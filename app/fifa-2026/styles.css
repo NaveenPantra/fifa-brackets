@@ -8,6 +8,8 @@
     --connector-color: #484849;
     --border-color: var(--connector-color);
     border-color: var(--border-color);
+    will-change: transform;
+    contain: layout style;
 }
 
 .match-card-container[data-rendering-complete="false"] {
@@ -26,10 +28,11 @@
 .match-card-container > article {
     --border-color: var(--connector-color);
     border-color: var(--border-color);
+    will-change: max-height;
 }
 
 .match-card-container[data-rendering-complete="true"] > article {
-    transition: max-height 150ms ease-out;
+    /* transition: max-height 150ms ease-out; */
 }
 
 .match-extra-info-container {
