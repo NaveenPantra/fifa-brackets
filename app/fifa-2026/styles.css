@@ -32,7 +32,7 @@
 }
 
 .match-card-container[data-rendering-complete="true"] > article {
-    /* transition: max-height 150ms ease-out; */
+    transition: max-height 150ms ease-out;
 }
 
 .match-extra-info-container {

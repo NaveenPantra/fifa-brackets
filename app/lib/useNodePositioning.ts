@@ -37,9 +37,6 @@ export const useSetPositionOfMatchCardBasedOnChild = ({
   React.useEffect(() => {
     if (!matchCardRef.current) return;
 
-    const resizeObserver = new ResizeObserver(() => {
-      updateStyles();
-    });
     const leftChild = document.getElementById(
       `match-${getLeftChildIndex(index)}`
     ) as HTMLDivElement;
@@ -47,6 +44,13 @@ export const useSetPositionOfMatchCardBasedOnChild = ({
       `match-${getRightChildIndex(index)}`
     ) as HTMLDivElement;
     if (!leftChild || !rightChild) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      const leftChildRect = leftChild.getBoundingClientRect();
+      //   if (leftChildRect.x >= 0) return;
+      updateStyles();
+    });
+
     resizeObserver.observe(leftChild as HTMLDivElement);
     // since it's a perfect binary tree.
     // resizeObserver.observe(rightChild as HTMLDivElement);
