@@ -100,6 +100,41 @@
 
 .match-parent-connector {}
 
+/* ── Hide scrollbar on tabs ── */
+.scrollbar-none {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.scrollbar-none::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+}
+
+/* ── Tab active indicator with View Transition ── */
+
+.tab-active-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    right: 8px;
+    height: 3px;
+    background: #fff;
+    border-radius: 3px 3px 0 0;
+    view-transition-name: active-tab;
+}
+
+/* Morph animation for the active tab indicator */
+::view-transition-old(active-tab),
+::view-transition-new(active-tab) {
+    animation-duration: 300ms;
+    animation-timing-function: ease-in-out;
+}
+
+/* Don't crossfade the rest of the page during tab switch */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+}
+
 .match-card-container[data-match-index="0"] .match-prominence-tag {
     background-color: #fec800;
 }
