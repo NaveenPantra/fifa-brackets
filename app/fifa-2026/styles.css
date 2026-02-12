@@ -99,3 +99,11 @@
 }
 
 .match-parent-connector {}
+
+.match-card-container[data-match-index="0"] .match-prominence-tag {
+    background-color: #fec800;
+}
+
+.match-card-container[data-match-index="0"] {
+    border-color: #fec800 !important;
+}

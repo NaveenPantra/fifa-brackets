@@ -22,7 +22,7 @@ export default function Fifa2026() {
 
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/95 to-black/80 z-[0]" />
 
-        <div className="mx-8 relative mt-10">
+        {/* <div className="mx-8 relative mt-10">
           <h1 className="text-4xl font-bold text-white mb-2">
             Fifa World Cup 26™ Bracket
           </h1>
@@ -30,12 +30,21 @@ export default function Fifa2026() {
             The easiest way to follow along in the tournament. Select a match
             for more information!
           </aside>
-        </div>
+        </div> */}
         <BracketTabs />
-        <div className="relative flex overflow-hidden pt-10 w-full pb-[30vh]">
-          {allBrackets.map((bracket) => (
-            <MatchesBracket key={bracket.id} bracket={bracket} />
-          ))}
+        <div className="relative">
+          <div className="relative flex overflow-hidden pt-10 w-full pb-[30vh]">
+            {allBrackets.map((bracket) => (
+              <MatchesBracket key={bracket.id} bracket={bracket} />
+            ))}
+          </div>
+          <div
+            className="pointer-events-none absolute top-0 left-0 w-full h-full"
+            style={{
+              background:
+                "linear-gradient(to right, transparent 70%, black 100%)",
+            }}
+          />
         </div>
       </main>
     </>

@@ -61,7 +61,11 @@ export default function BracketMatch({ match }: MatchProps) {
         </button>
       </div>
       {match.prominenceTag && (
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs bg-white text-black px-3 py-1 font-bold">
+        <div
+          className={`match-prominence-tag absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs bg-white text-black px-3 py-1 font-bold ${cn(
+            match.index === 0 && "bg-[#FEC800]"
+          )}`}
+        >
           {match.prominenceTag}
         </div>
       )}
