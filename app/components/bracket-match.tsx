@@ -42,25 +42,9 @@ export default function BracketMatch({ match }: MatchProps) {
       data-rendering-complete={isLeaf ? "true" : "false"}
       ref={matchCardRef}
       className={`${cn(
-        !isLeaf && "absolute "
+        !isLeaf && "relative "
       )} mb-6 min-w-[300px] border-2 bg-black backdrop-blur-md rounded-lg shadow-md match-card-container`}
     >
-      {/* {!!leftChildMatch && (
-        <div className="match-child-connector-left pointer-events-none"></div>
-      )}
-      {!!rightChildMatch && (
-        <div className="match-child-connector-right pointer-events-none"></div>
-      )}
-      {!!parentMatch && (
-        <>
-          {isFirstChild ? (
-            <div className="match-parent-connector-down pointer-events-none"></div>
-          ) : (
-            <div className="match-parent-connector-up pointer-events-none"></div>
-          )}
-        </>
-      )}
-      {!!parentMatch && <div className="match-parent-connector"></div>} */}
       {!!parentMatch && (
         <StepLine edgeId={`edge-${match.index}-${parentMatch.index}`} />
       )}

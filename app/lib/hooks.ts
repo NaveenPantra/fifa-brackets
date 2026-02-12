@@ -71,28 +71,37 @@ export const useSetPositionOfMatchCardBasedOnChild = ({
         `match-${rightChildMatch.index}`
       );
       if (!leftChild || !rightChild) return;
-      const childParent = leftChild.parentElement;
-      if (!childParent) return;
-      // console.log({ index, childParent, leftChild, rightChild });
-      // while (true) {
-      //   await new Promise((resolve) => setTimeout(resolve, 10));
-      //   if (
-      //     leftChild.getAttribute("data-rendering-complete") === "true" &&
-      //     rightChild.getAttribute("data-rendering-complete") === "true"
-      //   )
-      //     break;
-      // }
-      const childParentRect = childParent.getBoundingClientRect();
+
+      // Get the current translateY from the resolved transform so we can
+      // compute the card's natural (in-flow) center without resetting styles.
+      const computedTransform = getComputedStyle(
+        matchCardRef.current
+      ).transform;
+      const currentTranslateY =
+        computedTransform && computedTransform !== "none"
+          ? new DOMMatrix(computedTransform).m42
+          : 0;
+
+      const matchCardRect = matchCardRef.current.getBoundingClientRect();
       const leftChildRect = leftChild.getBoundingClientRect();
       const rightChildRect = rightChild.getBoundingClientRect();
-      const leftChildBottom = leftChildRect.bottom - childParentRect.top;
-      const rightChildTop = rightChildRect.top - childParentRect.top;
-      const leftAndRightChildMiddle = (leftChildBottom + rightChildTop) / 2;
+
+      // Natural center of the card (without translateY) in viewport coords
+      const naturalCenterY =
+        matchCardRect.top - currentTranslateY + matchCardRect.height / 2;
+
+      // Desired center: midpoint between left child bottom and right child top
+      const desiredCenterY =
+        (leftChildRect.bottom + rightChildRect.top) / 2;
+
+      // Offset needed to move card from natural center to desired center
+      const newTranslateY = desiredCenterY - naturalCenterY;
       matchCardRef.current.style.setProperty(
         "--translate-y",
-        `calc(${leftAndRightChildMiddle}px - 50%)`
+        `${newTranslateY}px`
       );
       matchCardRef.current.setAttribute("data-rendering-complete", "true");
+
       // @ts-expect-error - edge is always an SVGSVGElement
       const leftChildEdge = document.getElementById(
         `edge-${leftChildMatch.index}-${index}`
