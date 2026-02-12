@@ -3,6 +3,7 @@ import React from "react";
 import { Bracket } from "../lib/fifa";
 import BracketMatch from "./bracket-match";
 import { useIntersectionObserver } from "../lib/useIntersectionObserver";
+import { cn } from "../lib/utils";
 
 interface BracketProps {
   bracket: Bracket;
@@ -20,18 +21,23 @@ export default function MatchesBracket({
     bracketRef: bracketRef as React.RefObject<HTMLDivElement>,
   });
 
+  const isFinalBracket = bracket.id === "bracket-0";
+
   return (
     <section
       ref={bracketRef}
-      className="px-8 min-w-[calc(calc(var(--spacing)*16)+300px)] overflow-y-visible relative mb-10vh"
+      id={bracket.id}
+      className={`px-8 overflow-y-visible relative mb-10vh ${cn(
+        isFinalBracket && "w-screen"
+      )}`}
     >
       {bracket.matches.map((match) => (
         <BracketMatch key={match.id} match={match} />
       ))}
 
-      {bracket.extraMatches?.map((match) => (
+      {/* {bracket.extraMatches?.map((match) => (
         <BracketMatch key={match.id} match={match} />
-      ))}
+      ))} */}
     </section>
   );
 }

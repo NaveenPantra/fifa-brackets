@@ -492,7 +492,7 @@ export const matches: Match[] = [
 // ── Brackets ───────────────────────────────────────────────
 
 export const roundOf32: Bracket = {
-  id: "round-of-32",
+  id: "bracket-4",
   tabId: "round-of-32-tab",
   name: "Round of 32",
   shortName: "R32",
@@ -501,7 +501,7 @@ export const roundOf32: Bracket = {
 };
 
 export const roundOf16: Bracket = {
-  id: "round-of-16",
+  id: "bracket-3",
   tabId: "round-of-16-tab",
   name: "Round of 16",
   shortName: "R16",
@@ -510,7 +510,7 @@ export const roundOf16: Bracket = {
 };
 
 export const quarterFinals: Bracket = {
-  id: "quarter-finals",
+  id: "bracket-2",
   tabId: "quarter-finals-tab",
   name: "Quarter Finals",
   shortName: "QF",
@@ -519,7 +519,7 @@ export const quarterFinals: Bracket = {
 };
 
 export const semiFinals: Bracket = {
-  id: "semi-finals",
+  id: "bracket-1",
   tabId: "semi-finals-tab",
   name: "Semi Finals",
   shortName: "SF",
@@ -528,7 +528,7 @@ export const semiFinals: Bracket = {
 };
 
 export const finals: Bracket = {
-  id: "finals",
+  id: "bracket-0",
   tabId: "finals-tab",
   name: "Final",
   shortName: "F",

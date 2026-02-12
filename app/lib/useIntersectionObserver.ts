@@ -15,7 +15,7 @@ export const useIntersectionObserver = ({
         ...bracket.querySelectorAll(".match-card-container"),
       ] as HTMLDivElement[];
       const maxMatchArticleHeight = 160;
-      const minMatchArticleHeight = 75;
+      const minMatchArticleHeight = 65;
       bracketMatches.forEach((matchCard: HTMLDivElement) => {
         function animate() {
           const matchCardRect = matchCard.getBoundingClientRect();
@@ -27,21 +27,17 @@ export const useIntersectionObserver = ({
           const matchCardX = matchCardRect.x;
           // width of the match card
           const matchCardWidth = matchCardRect.width;
-          // max to 95%
-          const percentageHidden = Math.min(
-            Math.abs(matchCardX) / matchCardWidth,
-            0.95
+          // raw percentage of card hidden off-screen
+          const rawPercentageHidden = Math.abs(matchCardX) / matchCardWidth;
+          // start shrinking at 70% hidden, reach minimum at 95% hidden
+          const shrinkProgress = Math.min(
+            Math.max((rawPercentageHidden - 0.7) / (0.95 - 0.7), 0),
+            1
           );
-          // pick a value in range [] based on the percentage hidden
-          const matchArticleHeight = Math.min(
-            Math.max(
-              maxMatchArticleHeight -
-                (maxMatchArticleHeight - minMatchArticleHeight) *
-                  percentageHidden,
-              minMatchArticleHeight
-            ),
-            maxMatchArticleHeight
-          );
+          // pick a value in range [minMatchArticleHeight, maxMatchArticleHeight] based on progress
+          const matchArticleHeight =
+            maxMatchArticleHeight -
+            (maxMatchArticleHeight - minMatchArticleHeight) * shrinkProgress;
           // set the height of the match article
           matchArticle.style.setProperty(
             "max-height",

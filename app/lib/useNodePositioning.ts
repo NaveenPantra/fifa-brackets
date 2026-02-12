@@ -28,7 +28,7 @@ export const useSetPositionOfMatchCardBasedOnChild = ({
   React.useEffect(() => {
     if (isLeaf) return;
     async function setPosition() {
-      // await new Promise((resolve) => setTimeout(resolve, 100));
+      //   await new Promise((resolve) => setTimeout(resolve, 10));
       await updateStyles();
     }
     setPosition();

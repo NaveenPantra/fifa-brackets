@@ -7,7 +7,6 @@ import { useSetPositionOfMatchCardBasedOnChild } from "../lib/useNodePositioning
 import { cn } from "../lib/utils";
 import { useHoverOnMatchCard } from "../lib/useHoverOnMatchCard";
 import StepLine from "./step-line";
-import { useIntersectionObserver } from "../lib/useIntersectionObserver";
 
 interface MatchProps {
   match: Match;

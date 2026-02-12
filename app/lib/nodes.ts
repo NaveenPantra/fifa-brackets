@@ -20,6 +20,7 @@ export const updateNodePositionByItsChild = ({
     `match-${getParentIndex(index)}`
   ) as HTMLDivElement;
   if (!leftChild || !rightChild) return;
+  if (leftChild.isSameNode(parentNode)) return;
 
   // Get the current translateY from the resolved transform so we can
   // compute the card's natural (in-flow) center without resetting styles.
@@ -43,7 +44,6 @@ export const updateNodePositionByItsChild = ({
   // Offset needed to move card from natural center to desired center
   const newTranslateY = desiredCenterY - naturalCenterY;
   matchCard.style.setProperty("--translate-y", `${newTranslateY}px`);
-  matchCard.setAttribute("data-rendering-complete", "true");
 
   // @ts-expect-error - edge is always an SVGSVGElement
   const leftChildEdge = document.getElementById(
@@ -75,4 +75,5 @@ export const updateNodePositionByItsChild = ({
     // await new Promise((resolve) => setTimeout(resolve, 0));
     matchCard.style.removeProperty("height");
   });
+  matchCard.setAttribute("data-rendering-complete", "true");
 };

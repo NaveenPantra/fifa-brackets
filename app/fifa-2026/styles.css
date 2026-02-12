@@ -15,6 +15,7 @@
 
 .match-card-container[data-rendering-complete="true"] {
     opacity: 1;
+    transition: transform 150ms ease-out, border-color 150ms ease-out;
 }
 
 .match-card-container:hover {
@@ -24,6 +25,10 @@
 .match-card-container > article {
     --border-color: var(--connector-color);
     border-color: var(--border-color);
+}
+
+.match-card-container[data-rendering-complete="true"] > article {
+    transition: max-height 150ms ease-out;
 }
 
 .match-extra-info-container {
