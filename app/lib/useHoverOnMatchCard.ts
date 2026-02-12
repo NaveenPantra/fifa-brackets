@@ -16,6 +16,7 @@ export const useHoverOnMatchCard = ({
   const animationTime = 400;
 
   const handleActiveMatchCard = React.useCallback(() => {
+    matchCardRef.current.setAttribute("data-expanded", "true");
     const matchCardRect = matchCardRef.current.getBoundingClientRect();
     if (matchCardRect.x <= 0) return;
     const matchCardContainer = matchCardRef.current.querySelector(
@@ -65,7 +66,10 @@ export const useHoverOnMatchCard = ({
         `match-${getLeftChildIndex(index)}`
       );
       updateEdgeForNodeLevel(childMatchCard as HTMLDivElement);
-      if (progress >= 1 || currentHeight <= 0) return;
+      if (progress >= 1 || currentHeight <= 0) {
+        matchCardRef.current.setAttribute("data-expanded", "false");
+        return;
+      }
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);

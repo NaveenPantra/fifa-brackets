@@ -46,7 +46,7 @@ export const useSetPositionOfMatchCardBasedOnChild = ({
     if (!leftChild || !rightChild) return;
 
     const resizeObserver = new ResizeObserver(() => {
-      const leftChildRect = leftChild.getBoundingClientRect();
+      if (leftChild.getAttribute("data-expanded") === "true") return;
       //   if (leftChildRect.x >= 0) return;
       updateStyles();
     });

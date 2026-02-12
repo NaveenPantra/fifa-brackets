@@ -37,6 +37,7 @@ export default function BracketMatch({ match }: MatchProps) {
       data-left-child-match-index={leftChildMatch?.index ?? null}
       data-right-child-match-index={rightChildMatch?.index ?? null}
       data-rendering-complete={isLeaf ? "true" : "false"}
+      data-expanded={"false"}
       ref={matchCardRef}
       className={`${cn(
         !isLeaf && "relative "
