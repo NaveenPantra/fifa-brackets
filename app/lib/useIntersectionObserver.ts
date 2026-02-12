@@ -76,7 +76,7 @@ export const useIntersectionObserver = ({
         });
       },
       {
-        threshold: Array.from({ length: 101 }, (_, i) => i / 100),
+        threshold: Array.from({ length: 1001 }, (_, i) => i / 1000),
       }
     );
     observer.observe(bracketRef.current);

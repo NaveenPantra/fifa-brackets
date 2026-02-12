@@ -1,4 +1,4 @@
-import { Point } from "./fifa";
+import { Point, getParentIndex } from "./fifa";
 
 export const buildEdgePath = (
   from: Point,
@@ -125,4 +125,51 @@ export const updateEdge = (
   svg.setAttribute("viewBox", layout.viewBox);
 
   pathEl.setAttribute("d", d);
+};
+
+export const updatedEdgesNodeInLevel = () => {};
+
+export const updateEdgeForNodeLevel = (
+  initialMatchCard: HTMLDivElement
+  // index: number
+) => {
+  if (!initialMatchCard) return;
+  // const level = Math.floor(Math.log2(index + 1));
+  // const levelRange = [Math.pow(2, level) - 1, Math.pow(2, level + 1) - 2];
+  // const currentMatchCardIndex = index - levelRange[0];
+
+  const affectedMatchCards = [
+    ...(initialMatchCard.parentElement as HTMLDivElement).children,
+  ] as HTMLDivElement[];
+
+  const nodesAndEdge = affectedMatchCards
+    .map(
+      (
+        matchCard: HTMLDivElement
+      ): [HTMLDivElement, HTMLDivElement, SVGSVGElement | null] => {
+        const matchCardIndex = Number(
+          matchCard.getAttribute("data-match-index") as string
+        );
+        const parentIndex = getParentIndex(matchCardIndex);
+        const parentMatchCard = document.getElementById(`match-${parentIndex}`);
+        // @ts-expect-error - edge is always an SVGSVGElement
+        const edge = document.getElementById(
+          `edge-${matchCardIndex}-${parentIndex}`
+        ) as SVGSVGElement;
+        return [
+          matchCard as HTMLDivElement,
+          parentMatchCard as HTMLDivElement,
+          edge,
+        ];
+      }
+    )
+    .filter(Boolean);
+
+  nodesAndEdge.forEach(([matchCard, parentMatchCard, edge]) => {
+    updateEdge(
+      matchCard as HTMLDivElement,
+      parentMatchCard as HTMLDivElement,
+      edge as SVGSVGElement
+    );
+  });
 };

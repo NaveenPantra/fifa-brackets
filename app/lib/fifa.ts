@@ -560,23 +560,23 @@ export const allBrackets: Bracket[] = [
 // ── Tree Navigation Helpers ────────────────────────────────
 
 /** Parent match index (the match this one feeds into). */
-export function parent(i: number): number {
+export function getParentIndex(i: number): number {
   return Math.floor((i - 1) / 2);
 }
 
 /** Left child match index (feeds team1 of match i). */
-export function leftChild(i: number): number {
+export function getLeftChildIndex(i: number): number {
   return 2 * i + 1;
 }
 
 /** Right child match index (feeds team2 of match i). */
-export function rightChild(i: number): number {
+export function getRightChildIndex(i: number): number {
   return 2 * i + 2;
 }
 
 /** Is this a leaf match (Round of 32)? */
 export function isLeaf(i: number): boolean {
-  const leftChildIndex = leftChild(i);
+  const leftChildIndex = getLeftChildIndex(i);
   return leftChildIndex >= matches.length;
 }
 
@@ -616,8 +616,8 @@ export function formatMatchDate(date: string): string {
 export function getFeederMatches(
   i: number
 ): [Match | undefined, Match | undefined] {
-  const l = leftChild(i);
-  const r = rightChild(i);
+  const l = getLeftChildIndex(i);
+  const r = getRightChildIndex(i);
   return [
     l !== null ? matches[l] : undefined,
     r !== null ? matches[r] : undefined,
@@ -626,16 +626,16 @@ export function getFeederMatches(
 
 /** Get the match that this match feeds into. */
 export function getNextMatch(i: number): Match | undefined {
-  const p = parent(i);
+  const p = getParentIndex(i);
   return p !== null ? matches[p] : undefined;
 }
 
 export const isFirstChildForParent = (i: number): boolean => {
-  const p = parent(i);
-  return p !== null ? i === leftChild(p) : false;
+  const p = getParentIndex(i);
+  return p !== null ? i === getLeftChildIndex(p) : false;
 };
 
 export const isSecondChildForParent = (i: number): boolean => {
-  const p = parent(i);
-  return p !== null ? i === rightChild(p) : false;
+  const p = getParentIndex(i);
+  return p !== null ? i === getRightChildIndex(p) : false;
 };

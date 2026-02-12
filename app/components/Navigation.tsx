@@ -27,7 +27,7 @@ export default function Navigation() {
             <span className="text-white text-xl font-bold">FIFA 2026</span>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 hidden lg:flex">
             {navItems.map((item) => (
               <Link
                 key={item.href}

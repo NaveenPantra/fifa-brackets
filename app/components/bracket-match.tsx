@@ -2,10 +2,8 @@ import React from "react";
 import Image from "next/image";
 
 import { Match, matches, allBrackets, MatchStatus } from "../lib/fifa";
-import {
-  useConnectedMatches,
-  useSetPositionOfMatchCardBasedOnChild,
-} from "../lib/hooks";
+import { useGetConnectedMatches } from "../lib/hooks";
+import { useSetPositionOfMatchCardBasedOnChild } from "../lib/useNodePositioning";
 import { cn } from "../lib/utils";
 import { useHoverOnMatchCard } from "../lib/useHoverOnMatchCard";
 import StepLine from "./step-line";
@@ -16,7 +14,7 @@ interface MatchProps {
 }
 export default function BracketMatch({ match }: MatchProps) {
   const { parentMatch, leftChildMatch, rightChildMatch, isLeaf } =
-    useConnectedMatches({
+    useGetConnectedMatches({
       index: match.index,
     });
 
