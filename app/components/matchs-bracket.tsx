@@ -27,9 +27,9 @@ export default function MatchesBracket({
     <section
       ref={bracketRef}
       id={bracket.id}
-      className={`px-6 overflow-y-visible relative mb-10vh ${cn(
-        isFinalBracket && "w-screen"
-      )}`}
+      className={`px-6 overflow-y-visible relative mb-10vh ${cn()
+      // isFinalBracket && "min-w-screen flex justify-center"
+      }`}
     >
       {bracket.matches.map((match) => (
         <BracketMatch key={match.id} match={match} />

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 .match-card-container {
+    height: min-content;
     --translate-y: 0px;
     transform: translateY(var(--translate-y));
     transform-origin: center;
@@ -15,7 +16,7 @@
 
 .match-card-container[data-rendering-complete="true"] {
     opacity: 1;
-    transition: transform 150ms ease-out, border-color 150ms ease-out;
+    /* transition: transform 150ms ease-out, border-color 150ms ease-out; */
 }
 
 .match-card-container:hover {

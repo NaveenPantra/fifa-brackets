@@ -40,7 +40,7 @@ export default function BracketMatch({ match }: MatchProps) {
       ref={matchCardRef}
       className={`${cn(
         !isLeaf && "relative "
-      )} mb-6 min-w-[300px] border-2 bg-black backdrop-blur-md rounded-lg shadow-md match-card-container`}
+      )} mb-6 min-w-[300px] max-w-[300px] border-2 bg-black backdrop-blur-md rounded-lg shadow-md match-card-container`}
     >
       {!!parentMatch && (
         <StepLine edgeId={`edge-${match.index}-${parentMatch.index}`} />

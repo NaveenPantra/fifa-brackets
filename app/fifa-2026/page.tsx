@@ -32,7 +32,7 @@ export default function Fifa2026() {
           </aside>
         </div>
         <BracketTabs />
-        <div className="relative flex overflow-x-auto overflow-y-visible pt-10 w-full pb-[30vh] overflow-auto">
+        <div className="relative flex overflow-hidden pt-10 w-full pb-[30vh]">
           {allBrackets.map((bracket) => (
             <MatchesBracket key={bracket.id} bracket={bracket} />
           ))}
