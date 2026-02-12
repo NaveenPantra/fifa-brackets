@@ -1,5 +1,9 @@
 // ── Types ──────────────────────────────────────────────────
 
+export interface Point {
+  x: number;
+  y: number;
+}
 export interface Team {
   name: string;
   code: string;
