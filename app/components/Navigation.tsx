@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/app/lib/utils";
 
 interface NavItem {
@@ -42,12 +43,18 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="px-4 py-2 text-white/80 hover:text-white text-sm font-medium transition-colors">
-              Sign In
-            </button>
-            <button className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-all">
-              Sign Up
-            </button>
+           <Link href="https://github.com/NaveenPantra/fifa-brackets" target="__blank" className="cursor-pointer">
+              <button className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-all cursor-pointer flex items-center gap-2">
+                <Image
+                  src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/github-white-icon.png"
+                  alt="GitHub"
+                  width={20}
+                  height={20}
+                  className="inline-block"
+                />
+                Source
+              </button>
+            </Link>
           </div>
         </div>
       </div>
