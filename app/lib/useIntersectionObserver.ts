@@ -119,7 +119,7 @@ export const useIntersectionObserver = ({
       updateMatchCards();
     };
 
-    scrollParent.addEventListener("scroll", handleScroll, { passive: true });
+    scrollParent.addEventListener("scroll", handleScroll);
 
     return () => {
       scrollParent.removeEventListener("scroll", handleScroll);
