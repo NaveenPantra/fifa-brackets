@@ -27,7 +27,7 @@ export default function MatchesBracket({
     <section
       ref={bracketRef}
       id={bracket.id}
-      className={`relative px-6 overflow-y-visible relative mb-10vh ${cn(
+      className={`relative px-6 overflow-y-visible mb-10vh ${cn(
         isFinalBracket && "min-w-screen flex justify-center"
       )}`}
     >
